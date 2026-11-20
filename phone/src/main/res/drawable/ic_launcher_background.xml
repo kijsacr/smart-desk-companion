@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Base dark slate fill (#222328) -->
+    <path
+        android:fillColor="#FF222328"
+        android:pathData="M0,0h108v108h-108z" />
+
+    <!-- Mid-tone diagonal slate layer (#2E3038) -->
+    <path
+        android:fillAlpha="0.85"
+        android:fillColor="#FF2E3038"
+        android:pathData="M0,0 L108,0 L108,74 Q54,88 0,68 Z" />
+
+    <!-- Upper-left lighter slate glow (#43454D) -->
+    <path
+        android:fillAlpha="0.75"
+        android:fillColor="#FF43454D"
+        android:pathData="M0,0 L108,0 L108,38 Q54,54 0,38 Z" />
+
+    <!-- Subtle top specular sheen -->
+    <path
+        android:fillAlpha="0.10"
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M0,0 L108,0 L108,22 Q54,32 0,22 Z" />
+</vector>

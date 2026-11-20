@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+    <!-- V9 Section 11: Bluetooth Low Energy permissions for live chord remote control -->
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SmartDeskCompanionPhone">
+
+        <activity
+            android:name="com.smartdesk.companion.phone.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.action.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
+            Module B, Roadmap Step 4 & V7 Sections 4 & 7:
+            Phone Side Companion background service utilizing NotificationListenerService
+            to capture incoming alerts, detect OTPs, and sync Do Not Disturb (DND) state.
+        -->
+        <service
+            android:name=".service.PhoneNotificationListenerService"
+            android:exported="true"
+            android:label="@string/notification_service_label"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <!--
+            V7 Section 5.1 & Section 6.2:
+            Foreground service publishing phone/battery and phone/presence/lastSeen heartbeat.
+        -->
+        <service
+            android:name=".service.PhonePresenceAndBatteryService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+
+        <receiver
+            android:name=".service.PhoneBootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <!--
+            V7 Section 4.1:
+            Direct SMS receiver (RECEIVE_SMS) for OTP detection, bypassing Android 15+
+            sensitive notification redaction for SMS messages.
+        -->
+        <receiver
+            android:name=".service.SmsOtpBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter android:priority="999">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <!--
+            V5 Addendum:
+            Smart Desk Timetable Home-Screen Widget (triggers the 20s full-screen timetable
+            overlay on the Lenovo Yoga Tab 11 via Firebase /commands/timetable).
+        -->
+        <receiver
+            android:name=".widget.TimetableWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_timetable_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.smartdesk.companion.phone.action.TRIGGER_TIMETABLE" />
+                <action android:name="com.smartdesk.companion.phone.action.TIMETABLE_BOUNDARY_REFRESH" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/timetable_widget_info" />
+        </receiver>
+
+        <!--
+            Smart Desk PC Monitor Home-Screen Widget (toggles the full-screen CPU/RAM
+            Resource Monitor overlay on the Lenovo Yoga Tab 11 via /config/pcMonitor/fullScreen).
+        -->
+        <receiver
+            android:name=".widget.PcMonitorWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_pc_monitor_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.smartdesk.companion.phone.action.TOGGLE_PC_MONITOR" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/pc_monitor_widget_info" />
+        </receiver>
+
+        <!--
+            V9 Section 2:
+            Performance Mode Home-Screen Toggle Widget.
+        -->
+        <receiver
+            android:name=".widget.PerformanceModeWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_performance_mode_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.smartdesk.companion.phone.action.TOGGLE_PERFORMANCE_MODE" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/performance_mode_widget_info" />
+        </receiver>
+
+        <!--
+            V9 Section 2:
+            Transparent Confirm Dialog Activity over whatever app is foreground (Wing q, etc.)
+        -->
+        <activity
+            android:name=".ui.PerformanceEndConfirmDialogActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SmartDeskCompanionPhone.TransparentDialog"
+            android:launchMode="singleTop"
+            android:excludeFromRecents="true" />
+
+        <!--
+            V9 Section 3:
+            Persistent Foreground Service for Performance Mode (BLE GATT client/server + Firebase).
+        -->
+        <service
+            android:name=".service.PhonePerformanceForegroundService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice|dataSync" />
+
+    </application>
+
+</manifest>

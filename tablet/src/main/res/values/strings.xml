@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Smart Desk Companion</string>
+    <string name="media_listener_service_name">Smart Desk Spotify Session Bridge</string>
+</resources>

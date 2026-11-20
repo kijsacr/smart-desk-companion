@@ -1,0 +1,13 @@
+{
+  "name": "smart-desk-companion-alexa-skill",
+  "version": "1.0.0",
+  "description": "Smart Desk Companion V8 Alexa-hosted custom skill (Phase 1: Timetable)",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ../tests/test-timetable.js"
+  },
+  "dependencies": {
+    "ask-sdk-core": "^2.14.0",
+    "ask-sdk-model": "^1.19.0"
+  }
+}

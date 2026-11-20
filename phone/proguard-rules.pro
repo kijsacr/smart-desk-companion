@@ -1,0 +1,4 @@
+-keepattributes Signature
+-keepattributes *Annotation*
+-keepclassmembers class com.smartdesk.companion.shared.** { *; }
+-keep class com.smartdesk.companion.shared.** { *; }

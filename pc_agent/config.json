@@ -1,0 +1,5 @@
+{
+  "databaseUrl": "https://smart-desk-companion-cf7fd-default-rtdb.asia-southeast1.firebasedatabase.app/",
+  "intervalSec": 5,
+  "tempSource": "auto"
+}

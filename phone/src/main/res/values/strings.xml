@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Smart Desk</string>
+    <string name="notification_service_label">Smart Desk Notification Relay</string>
+    <string name="widget_timetable_label">Smart Desk Timetable</string>
+    <string name="widget_timetable_description">Shows your BTCS B timetable on the Smart Desk tablet for 20 seconds</string>
+    <string name="widget_pc_monitor_label">Smart Desk PC Monitor</string>
+    <string name="widget_pc_monitor_description">Toggles the full-screen CPU and RAM Resource Monitor on your Smart Desk tablet</string>
+    <string name="widget_performance_mode_label">Performance Mode</string>
+    <string name="widget_performance_mode_description">Toggles live chord &amp; lyric Performance Mode on phone and Smart Desk tablet</string>
+</resources>

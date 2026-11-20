@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "100000000000",
+    "firebase_url": "https://smart-desk-companion-default-rtdb.firebaseio.com",
+    "project_id": "smart-desk-companion",
+    "storage_bucket": "smart-desk-companion.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:100000000000:android:1111111111111111111111",
+        "android_client_info": {
+          "package_name": "com.smartdesk.companion.tablet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyPlaceholderKeyForBuildCompilation0000"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
